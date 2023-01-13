@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./P2P.css";
 import { createPair, ablcPrice, UsdtPrice, BnbPrice, BusdPrice, allowance } from "../sdk/p2p"
 import logoysnhlq1 from "./assets/logo_ysnhlq 1.png";
@@ -44,7 +44,22 @@ function P2P() {
     const [quoteAmount, setQuoteAmount] = useState();
     const [mode, setMode] = useState("buy");
     const [color, setColor] = useState(<button>Sell</button>);
-    //  allowance("0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x2c9F84Baa3071Dac7661c48760Ca78f601d95fF1", "0x4cBDDaA2f48dF41aCc17434180892DB2B5ae93Cf")
+    const [price, setPrice] = useState(0)
+    const [dPrice, setDPrice] = useState(0);
+    const [impact, setImpact] = useState(0.001)
+
+
+    // useEffect(async () => {
+    //     let p = await UsdtPrice()
+    //     let d = tokenB === "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" ? await BusdPrice() : tokenB === "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" ? await BnbPrice() : await UsdtPrice()
+    //     let percentImapct = tokenB === "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" ? 0.02 : tokenB === "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" ? 0.03 : 0.04
+    //     setPrice(p)
+    //     setDPrice(d)
+    //     setImpact(percentImapct)
+
+    // })
+
+    //  allowance("0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x6700dBF306a175E112ef2Dd8249d2181c3fAA31E", "0x4cBDDaA2f48dF41aCc17434180892DB2B5ae93Cf")
     const Buy = async () => {
         //buy 1 for 0.04
         const cPrice = tokenB === "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" ? await BusdPrice() : tokenB === "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" ? await BnbPrice() : await UsdtPrice()
@@ -74,6 +89,8 @@ function P2P() {
             alert("INVALID INPUT VALUES")
         }
     }
+
+
     return (
         <>
 
@@ -126,9 +143,15 @@ function P2P() {
                                                             setBaseAmount(e.target.value)
                                                             setQuoteAmount(bPrice)
                                                         }
+                                                        let p = await UsdtPrice()
+                                                        let d = tokenB === "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" ? await BusdPrice() : tokenB === "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" ? await BnbPrice() : await UsdtPrice()
+                                                        let percentImapct = tokenB === "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" ? 0.0002 : tokenB === "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" ? 0.000003 : 0.000004
+                                                        setPrice(p)
+                                                        setDPrice(d)
+                                                        setImpact(percentImapct)
 
                                                     }} type="text" class="p2p-b-box-div1a-line1" />
-                                                    <span class="p2p-b-box-div1a-line2">$400.00</span>
+                                                    <span class="p2p-b-box-div1a-line2">${price ? price : 0}</span>
                                                 </div>
                                             </div>
                                             <div class="p2p-b-box-div1b">
@@ -146,7 +169,7 @@ function P2P() {
                                                     setQuoteAmount(e.target.value)
 
                                                 }} value={quoteAmount} type="text" class="p2p-b-box-div1a-line1" />
-                                                <span class="p2p-b-box-div1a-line2">$400.00</span>
+                                                <span class="p2p-b-box-div1a-line2">${dPrice ? dPrice : 0}</span>
                                             </div>
                                             <select onChange={(e) => {
                                                 setTokenB(e.target.value)
@@ -165,7 +188,7 @@ function P2P() {
                                             </div>
                                             <div class="p2p-b-box1-div2b">
                                                 <p>999.1458764USDT</p>
-                                                <span class="p2p-b-box1-div2b-txt">-0.0087</span>
+                                                <span class="p2p-b-box1-div2b-txt">-{impact}</span>
                                             </div>
                                         </div>
                                     </div>

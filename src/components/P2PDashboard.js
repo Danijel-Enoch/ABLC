@@ -19,7 +19,7 @@ function P2PDashboard() {
     const [busdPrice, newBusdPrice] = useState()
     const [bnbPrice, newBnbPrice] = useState()
     const [usdtPrice, newUsdtPrice] = useState()
-    const address = "0x2c9F84Baa3071Dac7661c48760Ca78f601d95fF1"
+    const address = "0x6700dBF306a175E112ef2Dd8249d2181c3fAA31E"
     async function setUSDTPrice(newPrice) {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
