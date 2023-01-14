@@ -30,6 +30,8 @@ import p2ph4 from "./assets/p2p-h-4.png";
 import p2ph5 from "./assets/p2p-h-5.png";
 import p2ph6 from "./assets/p2p-h-6.png";
 import peakpx1 from "./assets/peakpx 1.png";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Rectangle8 from "./assets/Rectangle 8.png";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 // import btnbg from "./assets/btn-bg.png";
@@ -48,6 +50,7 @@ function P2P() {
     const [price, setPrice] = useState(0)
     const [dPrice, setDPrice] = useState(0);
     const [impact, setImpact] = useState(0.001)
+    const notify = (msg) => toast(msg.toString());
     //  allowance("0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x6700dBF306a175E112ef2Dd8249d2181c3fAA31E", "0x4cBDDaA2f48dF41aCc17434180892DB2B5ae93Cf")
     const Buy = async () => {
         //buy 1 for 0.04
@@ -82,7 +85,7 @@ function P2P() {
 
     return (
         <>
-
+            <ToastContainer />
             <div class="p2p-main">
                 <div class="bg"><img src={peakpx1}></img></div>
 

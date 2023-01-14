@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import "./P2PDashboard.css";
 import Footer from "./Footer";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import logoysnhlq1 from "./assets/logo_ysnhlq 1.png";
 import usdt from "./assets/usdt.png";
 import busd from "./assets/busd.png";
@@ -21,46 +22,63 @@ function P2PDashboard() {
     const [bnbPrice, newBnbPrice] = useState()
     const [usdtPrice, newUsdtPrice] = useState()
     const address = "0x6700dBF306a175E112ef2Dd8249d2181c3fAA31E"
+    const notify = (msg) => toast(msg.toString());
     async function setUSDTPrice(newPrice) {
+        notify("Setting Price...laoding")
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
         const abi = [
             "function setTokenPriceUsdt(uint256 _newPrice) returns (uint256)"
         ];
-        const contract = new ethers.Contract(address, abi, signer);
-        const tx = await contract.functions.setTokenPrice(newPrice.toString());
+        try {
+            const contract = new ethers.Contract(address, abi, signer);
+            const tx = await contract.functions.setTokenPriceUsdt(newPrice.toString());
 
-        const receipt = await tx.wait();
-        console.log("receipt", receipt);
+            const receipt = await tx.wait();
+            console.log("receipt", receipt);
+        } catch (err) {
+            notify("Error Occured, not Owner...Not Enough GAs")
+        }
     }
     async function setBnbPrice(newPrice) {
+        notify("Setting Price...laoding")
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
+        try {
+            const abi = [
+                "function setTokenPriceBnb(uint256 _newPrice) returns (uint256)"
+            ];
+            const contract = new ethers.Contract(address, abi, signer);
+            const tx = await contract.functions.setTokenPriceBnb(newPrice.toString());
 
-        const abi = [
-            "function setTokenPriceBnb(uint256 _newPrice) returns (uint256)"
-        ];
-        const contract = new ethers.Contract(address, abi, signer);
-        const tx = await contract.functions.setTokenPrice(newPrice.toString());
-
-        const receipt = await tx.wait();
-        console.log("receipt", receipt);
+            const receipt = await tx.wait();
+            console.log("receipt", receipt);
+        }
+        catch (err) {
+            notify("Error Occured, not Owner or Not Enough GAs")
+        }
     }
     async function setBusdPrice(newPrice) {
+        notify("Setting Price...laoding")
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
+        try {
+            const abi = [
+                "function setTokenPriceBusd(uint256 _newPrice) returns (uint256)"
+            ];
+            const contract = new ethers.Contract(address, abi, signer);
+            const tx = await contract.functions.setTokenPriceBusd(newPrice.toString());
 
-        const abi = [
-            "function setTokenPriceBusd(uint256 _newPrice) returns (uint256)"
-        ];
-        const contract = new ethers.Contract(address, abi, signer);
-        const tx = await contract.functions.setTokenPrice(newPrice.toString());
-
-        const receipt = await tx.wait();
-        console.log("receipt", receipt);
+            const receipt = await tx.wait();
+            console.log("receipt", receipt);
+        }
+        catch (err) {
+            notify("Error Occured, not Owner or Not Enough GAs")
+        }
     }
     return (
         <>
+            <ToastContainer />
             <div class="dashb-main">
                 <div class="dashb-a">
                     <div class="dashb-a-nav-logo">
@@ -85,7 +103,7 @@ function P2PDashboard() {
                             </div>
                             <div class="dashb-b-div2a-div3">
                                 <button
-                                    onClick={() => setUSDTPrice(usdtPrice)} >Update</button>
+                                    onClick={() => usdtPrice ? setUSDTPrice(usdtPrice) : notify("invalid Input")} >Update</button>
                             </div>
                         </div>
                         {/* 2/////// */}
@@ -99,7 +117,7 @@ function P2PDashboard() {
                             </div>
                             <div class="dashb-b-div2a-div3">
                                 <button
-                                    onClick={() => busdPrice ? setBusdPrice(busdPrice) : alert("empty value")} >Update</button>
+                                    onClick={() => busdPrice ? setBusdPrice(busdPrice) : notify("invalid input")} >Update</button>
                             </div>
                         </div>
                         {/* 3////////// */}
@@ -113,7 +131,7 @@ function P2PDashboard() {
                             </div>
                             <div class="dashb-b-div2a-div3">
                                 <button
-                                    onClick={() => bnbPrice ? setBnbPrice(BnbPrice) : alert("empty value")}
+                                    onClick={() => bnbPrice ? setBnbPrice(BnbPrice) : notify("invalid value")}
                                 >Update</button>
                             </div>
                         </div>
